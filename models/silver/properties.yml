@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: silver_sales
+    config:
+      materialized: table
+      schema: silver
+
+  - name: silver_customer
+    config:
+      materialized: table
+      schema: silver
+
+  - name: silver_store
+    config:
+      materialized: table
+      schema: silver
+
+  - name: silver_returns
+    config:
+      materialized: table
+      schema: silver
+
+  - name: silver_date
+    config:
+      materialized: table
+      schema: silver
+
+  - name: silver_product
+    config:
+      materialized: table
+      schema: silver

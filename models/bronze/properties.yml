@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: bronze_date
+    config:
+      materialized: table
+      schema: bronze
+
+  - name: bronze_returns
+    config:
+      materialized: table
+      schema: bronze
+
+  - name: bronze_sales
+    config:
+        materialized: table
+        schema: bronze
+
+    tests:
+      - non_negative:
+          columns: [gross_amount, net_amount]
+
+    columns:
+    
+      - name: sales_id
+        data_tests:
+          - not_null
+          - unique
+
+  - name: bronze_store
+
+    columns:
+
+      - name: store_sk
+        data_tests:
+          - not_null
+          - unique
+
+      - name: store_name
+        data_tests:
+        - unique
+        - dbt_expectations.expect_column_values_to_be_of_type:
+            column_type: VARCHAR
+        - accepted_values:
+            arguments:
+              values:
+                - 'MegaMart Manhattan'
+                - 'MegaMart Brooklyn'
+                - 'MegaMart Austin'
+                - 'MegaMart San Jose'
+                - 'MegaMart Toronto'
+            config:
+              severity: warn
+
+
+
+    

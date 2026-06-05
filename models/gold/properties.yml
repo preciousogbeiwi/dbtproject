@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: product_sales
+    config:
+      materialized: table
+      schema: gold
+
+  - name: product_returns
+    config:
+      materialized: table
+      schema: gold
