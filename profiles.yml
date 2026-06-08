@@ -1,0 +1,23 @@
+dbtproject:
+  target: dev
+  outputs:
+
+    dev:
+      type: snowflake
+      account: your_account
+      user: DBT_USER
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      role: dbt_role
+      database: dbt_project_dev
+      warehouse: COMPUTE_WH
+      schema: DEV
+
+    prod:
+      type: snowflake
+      account: your_account
+      user: DBT_USER
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      role: dbt_role
+      database: dbt_project_prod
+      warehouse: COMPUTE_WH
+      schema: PROD

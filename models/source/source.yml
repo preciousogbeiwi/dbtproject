@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: source 
-    database: DBT_PROJECT_DEV
+    database: '{{target.database}}'
     schema: SOURCE
     tables:
       - name: fact_sales
