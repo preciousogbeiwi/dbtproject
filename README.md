@@ -1,58 +1,72 @@
 # prec_dbt_project
 
-A dbt project for building a layered analytics pipeline from raw source data into bronze, silver, and gold models.
+This repository contains a dbt project for transforming source data into a layered analytics pipeline with bronze, silver, and gold models.
 
 ## Project overview
 
-This repository defines a dbt project named `prec_dbt_project`. It includes:
+The project is named `prec_dbt_project` and is structured around a standard medallion-style architecture:
 
-- `bronze/` models for raw staging and ingestion logic
-- `silver/` models for cleaned, standardized data
-- `gold/` models for aggregated or business-ready outputs
-- `macros/` for reusable SQL functions and schema generation
-- `tests/` for data quality checks and custom generic tests
-- `packages.yml` to manage dbt package dependencies
+- `models/bronze/` — raw or lightly staged source models
+- `models/silver/` — cleaned, standardized, and business-ready transformations
+- `models/gold/` — curated analytics models for downstream reporting and analysis
+- `macros/` — reusable SQL logic and schema helpers
+- `tests/` — data quality checks and validation logic
+- `snapshots/` — snapshot definitions for tracking historical changes
 
-## Key directories
+## Source data
 
-- `models/bronze/` — raw ingestion models and source staging
-- `models/silver/` — cleaned, standardized, and enriched models
-- `models/gold/` — business layer models and analytics output
-- `models/source/` — source definitions and metadata
-- `macros/` — custom dbt macros used across the project
-- `tests/` — custom tests including non-negative validation logic
-- `analyses/` — ad hoc analysis SQL files
-- `seeds/` — seed data definitions (if needed)
-- `snapshots/` — snapshot configurations
+The project currently references these source entities:
+
+- `fact_sales`
+- `fact_returns`
+- `dim_customer`
+- `dim_product`
+- `dim_date`
+- `dim_store`
+- `items`
+
+These definitions are managed in `models/source/source.yml` and form the foundation of the transformation flow.
+
+## Key folders
+
+- `analyses/` — exploratory SQL used for investigation and validation
+- `macros/` — reusable dbt macros used across models
+- `models/bronze/` — initial ingestion and staging layer
+- `models/silver/` — cleaned and standardized intermediate models
+- `models/gold/` — final business-facing and aggregation models
+- `tests/` — custom generic and SQL-based tests
 
 ## Dependencies
 
-This project uses the following dbt package dependency defined in `packages.yml`:
+The project uses the following dbt package:
 
-- `calogica/dbt_expectations` version `>=0.10.0, <0.11.0`
+- `calogica/dbt_expectations` (`>=0.10.0, <0.11.0`)
 
-Run `dbt deps` to install package dependencies before running the project.
+Install dependencies with:
+
+```bash
+dbt deps
+```
 
 ## Setup
 
-1. Install dbt for your target adapter.
-2. Ensure your dbt `profiles.yml` contains a profile named `prec_dbt_project`.
-   - This project is configured to use the profile name from `dbt_project.yml`.
+1. Install dbt and your preferred adapter.
+2. Make sure your `profiles.yml` contains a profile named `prec_dbt_project`.
 3. From the project root, install dependencies:
 
 ```bash
 dbt deps
 ```
 
-4. Optional: clean build artifacts before running the project:
+4. Verify the connection and environment:
 
 ```bash
-dbt clean
+dbt debug
 ```
 
 ## Typical workflow
 
-Build the entire project:
+Run the whole project:
 
 ```bash
 dbt run
@@ -64,42 +78,34 @@ Run tests:
 dbt test
 ```
 
-Compile SQL and review the DAG without executing transformations:
+Compile SQL without materializing models:
 
 ```bash
 dbt compile
 ```
 
-Show the project DAG and model relationships:
+Generate and serve documentation:
 
 ```bash
 dbt docs generate
 ```
 
-## Common commands
+```bash
+dbt docs serve
+```
 
-- `dbt debug` — validate your profile and connection
-- `dbt run` — execute model builds
-- `dbt test` — run dbt tests
-- `dbt compile` — compile models without running them
-- `dbt docs generate` — build documentation artifacts
-- `dbt docs serve` — view docs locally
+## Validation
 
-## Testing and validation
-
-This project includes structured tests to validate model data quality.
-
-- Custom generic tests are defined in `tests/generic/`
-- Non-negative checks and other validations are located in `tests/`
+The project includes data-quality checks in `tests/`, including custom validation rules to help ensure model reliability.
 
 ## Notes
 
-- Model materialization defaults are configured in `dbt_project.yml`.
-- The project is organized using a common bronze/silver/gold architecture for analytics workflows.
-- Update `profiles.yml` and adapter configuration as needed for your environment.
+- The default materialization settings are defined in `dbt_project.yml`.
+- Update `profiles.yml` if your target database or credentials differ from the local setup.
+- This project is intended to be extended with additional business logic as the analytics layer grows.
 
-## Resources
+## Useful references
 
-- dbt docs: https://docs.getdbt.com/
-- dbt community: https://community.getdbt.com/
-- dbt packages: https://hub.getdbt.com/
+- dbt Documentation: https://docs.getdbt.com/
+- dbt Packages: https://hub.getdbt.com/
+- dbt Community: https://community.getdbt.com/
