@@ -1,0 +1,33 @@
+name: dbt CI
+
+on:
+  pull_request:
+
+jobs:
+  dbt-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dbt
+        run: |
+          pip install dbt-snowflake
+
+      - name: Set env vars
+        run: echo "snowflake_password=${{ secrets.snowflake_password }}" >> $GITHUB_ENV
+
+      - name: dbt debug
+        run: dbt debug
+
+      - name: dbt compile
+        run: dbt compile
+
+      - name: dbt build (CI run)
+        run: dbt build --target dev

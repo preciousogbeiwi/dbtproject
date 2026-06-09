@@ -1,0 +1,26 @@
+name: dbt CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dbt-prod:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dbt
+        run: pip install dbt-snowflake
+
+      - name: Set env vars
+        run: echo "snowflake_password=${{ secrets.snowflake_password }}" >> $GITHUB_ENV
+
+      - name: Run dbt production build
+        run: dbt build --target prod
