@@ -20,4 +20,5 @@ prec_dbt_project:
       type: snowflake
       user: '{{ env_var(''SNOWFLAKE_USERNAME'') }}'
       warehouse: COMPUTE_WH
+      
   target: dev

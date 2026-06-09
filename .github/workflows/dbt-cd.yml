@@ -7,7 +7,7 @@ on:
 
 env:
   SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-  SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+  SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USERNAME }}
   SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
   
 jobs:
@@ -24,10 +24,11 @@ jobs:
       - name: Install dbt
         run: pip install dbt-snowflake
 
-      - name: Set env vars
-        run: echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT }}" >> $GITHUB_ENV
-        run: echo "SNOWFLAKE_USERNAME=${{ secrets.SNOWFLAKE_USERNAME }}" >> $GITHUB_ENV
-        run: echo "SNOWFLAKE_PASSWORD=${{ secrets.SNOWFLAKE_PASSWORD }}" >> $GITHUB_ENV
+      {# - name: Set env vars
+        run: |
+            echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT }}" >> $GITHUB_ENV
+            echo "SNOWFLAKE_USERNAME=${{ secrets.SNOWFLAKE_USERNAME }}" >> $GITHUB_ENV
+            echo "SNOWFLAKE_PASSWORD=${{ secrets.SNOWFLAKE_PASSWORD }}" >> $GITHUB_ENV #}
 
       - name: Run dbt production build
         run: dbt build --target prod
