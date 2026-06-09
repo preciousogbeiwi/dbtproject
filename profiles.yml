@@ -1,23 +1,23 @@
 prec_dbt_project:
   outputs:
     dev:
-      account: '{{ env_var('snowflake_account') }}'
+      account: '{{ env_var(''snowflake_account'') }}'
       database: dbt_project_dev
-      password: '{{ env_var('snowflake_password') }}'
+      password: '{{ env_var(''snowflake_password'') }}'
       role: analytics_role
       schema: bronze
       threads: 1
       type: snowflake
-      user: '{{ env_var('snowflake_username') }}'
+      user: '{{ env_var(''snowflake_username'') }}'
       warehouse: compute_wh
     
     prod:
-      account: '{{ env_var('snowflake_account') }}'
+      account: '{{ env_var(''snowflake_account'') }}'
       database: dbt_project_prod
-      password: '{{ env_var('snowflake_password') }}'
+      password: '{{ env_var(''snowflake_password'') }}'
       role: analytics_role
       schema: bronze
       type: snowflake
-      user: '{{ env_var('snowflake_username') }}'
+      user: '{{ env_var(''snowflake_username'') }}'
       warehouse: COMPUTE_WH
   target: dev
